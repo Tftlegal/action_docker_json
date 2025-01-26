@@ -5,7 +5,7 @@ set -e
 
 api_url="https://get.sytes.ru/json/port_scan_results.json"
 echo $api_url
-open_port=$(curl -s "${api_url}" | jq -r --arg ip "${INPUT_IP}" 'select(.ip? | index($ip)) | .open_ports| join(", ")')
+open_port=$(curl -s "${api_url}" | jq -r --arg ip "${INPUT_IP}" '.[] | select(.ip == $ip) | .open_ports[]')
 echo $open_port
 
 echo "::set-output name=open_port::$open_port"
